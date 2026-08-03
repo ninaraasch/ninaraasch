@@ -1,26 +1,196 @@
 @import "tailwindcss";
 
+@theme {
+    --color-ink: #222222;
+    --color-paper: #f3f3f3;
+    --color-placeholder: #f3f3f3;
+    --font-sans: var(--font-helvetica-neue), Helvetica, Arial, sans-serif;
+    --font-display: var(--font-helvetica-neue-bold), Helvetica, Arial, sans-serif;
+    --ease-mask: cubic-bezier(0.65, 0, 0.35, 1);
+    --breakpoint-nav: 701px;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --nav-height: 47px;
+    --page-inset: 87px;
+    --page-margin: 20px;
+    --grid-gap: 20px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@media (max-width: 700px) {
+    :root {
+        --nav-height: 82px;
+        --page-margin: 10px;
+    }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+    height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    min-height: 100%;
+    overflow: hidden;
+    touch-action: manipulation;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    line-height: 1.45em;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+}
+
+.logotype {
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+
+.label {
+    font-style: italic;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+    body,
+    a,
+    button {
+        cursor: none;
+    }
+}
+
+.cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    mix-blend-mode: difference;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease;
+    will-change: transform;
+}
+
+.edge-dot {
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--color-ink);
+    opacity: 0.3;
+    transition:
+        width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) {
+    .edge-zone:hover .edge-dot {
+        width: 8px;
+        height: 8px;
+        opacity: 1;
+    }
+}
+
+@media (hover: none),
+(pointer: coarse) {
+    .cursor-dot {
+        display: none;
+    }
+
+    .edge-dot {
+        opacity: 0.6;
+    }
+}
+
+img {
+    display: block;
+}
+
+.underline-reveal {
+    position: relative;
+    cursor: pointer;
+}
+
+.underline-reveal::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.underline-reveal[data-active="true"]::after {
+    opacity: 1;
+}
+
+@media (hover: hover) {
+    .underline-reveal:hover::after {
+        opacity: 1;
+    }
+}
+
+.panel-clip {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    height: calc(100dvh - var(--nav-height));
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.panel {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-paper);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-100%);
+    transition:
+        transform 0.5s var(--ease-mask),
+        opacity 0.5s var(--ease-mask),
+        visibility 0s linear 0.5s;
+}
+
+.panel-content {
+    transform: translateY(100%);
+    transition: transform 0.5s var(--ease-mask);
+}
+
+.panel[data-open="true"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition:
+        transform 0.5s var(--ease-mask),
+        opacity 0.5s var(--ease-mask),
+        visibility 0s linear 0s;
+}
+
+.panel[data-open="true"] .panel-content {
+    transform: translateY(0);
+}
+
+.hide-scrollbar {
+    scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
 }
