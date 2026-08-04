@@ -49,7 +49,7 @@ export function Contact() {
           </a>
         </div>
 
-        <div className="col-span-2 flex flex-col gap-5 nav:col-span-4 nav:col-start-5">
+        <div className="col-span-2 flex flex-col gap-5 nav:col-span-3 nav:col-start-5">
           {lists.map((list) => (
             <div key={list.label}>
               <h3 className="label">{list.label}</h3>
