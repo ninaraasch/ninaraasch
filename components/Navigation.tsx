@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import type { Slide } from "@/data/projects";
+import { useRef } from "react";
+import { useMountEffect } from "@/hooks/useMountEffect";
+import type { ContactContent, ProjectSection, Slide } from "@/lib/content";
 import { Contact } from "./Contact";
 import { Overview } from "./Overview";
 
 export type MenuName = "overview" | "contact";
 
 type NavigationProps = {
+  sections: ProjectSection[];
+  contact: ContactContent;
   slides: Slide[];
   currentIndex: number;
   openMenu: MenuName | null;
@@ -19,6 +23,8 @@ type NavigationProps = {
 };
 
 export function Navigation({
+  sections,
+  contact,
   slides,
   currentIndex,
   openMenu,
@@ -29,6 +35,27 @@ export function Navigation({
   onHome,
 }: NavigationProps) {
   const isOpen = openMenu !== null;
+  const titleRef = useRef<HTMLParagraphElement>(null);
+  const counterRef = useRef<HTMLParagraphElement>(null);
+
+  useMountEffect(() => {
+    const title = titleRef.current;
+    const counter = counterRef.current;
+    if (!title) return;
+
+    const syncTitleOffset = () => {
+      document.documentElement.style.setProperty(
+        "--title-offset",
+        `${Math.round(title.getBoundingClientRect().left)}px`,
+      );
+    };
+
+    syncTitleOffset();
+    const observer = new ResizeObserver(syncTitleOffset);
+    observer.observe(document.body);
+    if (counter) observer.observe(counter);
+    return () => observer.disconnect();
+  });
 
   return (
     <nav className="pointer-events-none fixed inset-0 z-99 flex overflow-hidden">
@@ -54,6 +81,7 @@ export function Navigation({
           >
             <div className="panel-content pt-5">
               <Overview
+                sections={sections}
                 hasOpened={hasOpenedOverview}
                 onOpen={onOpenProject}
               />
@@ -67,7 +95,7 @@ export function Navigation({
             inert={openMenu !== "contact"}
           >
             <div className="panel-content pt-5">
-              <Contact />
+              <Contact content={contact} />
             </div>
           </div>
         </div>
@@ -102,10 +130,12 @@ export function Navigation({
             >
               contact
             </button>
-            <p className="shrink-0">
+            <p ref={counterRef} className="shrink-0">
               {currentIndex + 1}/{slides.length}
             </p>
-            <p className="truncate">{slides[currentIndex].title}</p>
+            <p ref={titleRef} className="truncate">
+              {slides[currentIndex].title}
+            </p>
           </div>
 
           <div className="col-start-2 row-start-1 flex justify-end gap-2.5 justify-self-end nav:col-span-5 nav:col-start-8 nav:gap-5 nav:justify-self-stretch">

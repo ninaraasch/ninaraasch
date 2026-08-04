@@ -46,3 +46,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# image masters (originals live in Sanity)
+/masters/
+
+# sanity studio build
+/dist/
+
+# sanity runtime
+/.sanity/

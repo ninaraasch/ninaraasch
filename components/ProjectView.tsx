@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import type { ProjectSection, Slide } from "@/data/projects";
+import type { ProjectSection, Slide } from "@/lib/content";
 import { useMountEffect } from "@/hooks/useMountEffect";
 import { useViewportWidth } from "@/hooks/useViewport";
 import { indexMetrics, justifyRows } from "@/lib/indexLayout";
@@ -33,9 +33,19 @@ export function ProjectView({
   const step = (offset: number) =>
     setCurrentIndex((index) => (index + offset + slides.length) % slides.length);
 
+  const closeIndex = () => {
+    showIndexRef.current = false;
+    setShowIndex(false);
+    setCurrentIndex(0);
+  };
+
   const toggleIndex = () => {
-    showIndexRef.current = !showIndexRef.current;
-    setShowIndex(showIndexRef.current);
+    if (showIndexRef.current) {
+      closeIndex();
+      return;
+    }
+    showIndexRef.current = true;
+    setShowIndex(true);
   };
 
   const selectSlide = (index: number) => {
@@ -48,8 +58,7 @@ export function ProjectView({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         if (showIndexRef.current) {
-          showIndexRef.current = false;
-          setShowIndex(false);
+          closeIndex();
           return;
         }
         onClose();
@@ -74,9 +83,9 @@ export function ProjectView({
 
       {showIndex ? (
         <div className="hide-scrollbar absolute inset-x-0 top-[var(--nav-height)] bottom-[var(--nav-height)] z-5 overflow-y-auto bg-paper">
-          <div className="flex flex-col gap-5 px-[var(--page-margin)] py-5">
+          <div className="flex flex-col gap-2.5 px-[var(--page-margin)] py-5">
             {rows.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex gap-5">
+              <div key={rowIndex} className="flex gap-2.5">
                 {row.items.map(({ item, index }) => (
                   <button
                     key={item.src}
@@ -106,8 +115,8 @@ export function ProjectView({
           <p>{project.title}</p>
           <button
             type="button"
-            aria-label="Back to overview"
-            onClick={onBackToOverview}
+            aria-label={showIndex ? "Close index" : "Back to overview"}
+            onClick={showIndex ? closeIndex : onBackToOverview}
             className="pointer-events-auto -m-3 cursor-pointer p-3 text-[22px] leading-none transition-opacity duration-200 hover:opacity-50"
           >
             ×

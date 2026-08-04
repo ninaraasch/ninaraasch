@@ -8,7 +8,7 @@ export type IndexRow<T> = {
   height: number;
 };
 
-const GAP = 20;
+const GAP = 10;
 const PORTRAIT_RATIO = 0.8;
 const MOBILE_BREAKPOINT = 700;
 

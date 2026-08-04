@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { projectSections, type Slide } from "@/data/projects";
+import type { ContactContent, ProjectSection, Slide } from "@/lib/content";
 import { useMountEffect } from "@/hooks/useMountEffect";
 import { Cursor } from "./Cursor";
 import { EdgeZones } from "./EdgeZones";
@@ -9,14 +9,20 @@ import { Navigation, type MenuName } from "./Navigation";
 import { ProjectView } from "./ProjectView";
 import { Slideshow } from "./Slideshow";
 
-export function Portfolio({ slides }: { slides: Slide[] }) {
+type PortfolioProps = {
+  sections: ProjectSection[];
+  slides: Slide[];
+  contact: ContactContent;
+};
+
+export function Portfolio({ sections, slides, contact }: PortfolioProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [openMenu, setOpenMenu] = useState<MenuName | null>(null);
   const [hasOpenedOverview, setHasOpenedOverview] = useState(false);
   const [openProjectSlug, setOpenProjectSlug] = useState<string | null>(null);
   const openProjectRef = useRef<string | null>(null);
 
-  const project = projectSections.find(
+  const project = sections.find(
     (section) => section.slug === openProjectSlug,
   );
 
@@ -68,6 +74,8 @@ export function Portfolio({ slides }: { slides: Slide[] }) {
       <EdgeZones onPrevious={() => step(-1)} onNext={() => step(1)} />
 
       <Navigation
+        sections={sections}
+        contact={contact}
         slides={slides}
         currentIndex={currentIndex}
         openMenu={openMenu}

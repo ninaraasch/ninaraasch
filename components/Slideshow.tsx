@@ -1,6 +1,6 @@
 "use client";
 
-import type { Slide } from "@/data/projects";
+import type { Slide } from "@/lib/content";
 import { useViewportHeight, useViewportWidth } from "@/hooks/useViewport";
 import { Asset } from "./Asset";
 
