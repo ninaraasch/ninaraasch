@@ -17,6 +17,12 @@ export default defineConfig({
         S.list()
           .title("Content")
           .items([
+            S.listItem()
+              .title("Homepage")
+              .id("homepage")
+              .child(
+                S.document().schemaType("homepage").documentId("homepage"),
+              ),
             orderableDocumentListDeskItem({
               type: "project",
               title: "Projects",

@@ -3,7 +3,6 @@ export type ProjectImage = {
   width: number;
   height: number;
   alt?: string | null;
-  featured?: boolean | null;
 };
 
 export type SanityProject = {
@@ -47,7 +46,10 @@ export type ContactContent = {
   exhibitions: string[];
 };
 
-export function projectTitle(project: SanityProject) {
+export function projectTitle(project: {
+  campaign?: string | null;
+  client: string;
+}) {
   return [project.campaign, project.client].filter(Boolean).join(" — ");
 }
 
@@ -81,7 +83,34 @@ export function toSlides(sections: ProjectSection[]): Slide[] {
   );
 }
 
-export function toHomeSlides(slides: Slide[]): Slide[] {
-  const featured = slides.filter((slide) => slide.featured);
-  return featured.length > 0 ? featured : slides;
+export type HomepageSlide = ProjectImage & {
+  title?: string | null;
+  project?: { campaign?: string | null; client: string } | null;
+};
+
+export type Homepage = {
+  slides?: HomepageSlide[] | null;
+} | null;
+
+export function toHomeSlides(homepage: Homepage, allSlides: Slide[]): Slide[] {
+  const chosen = homepage?.slides ?? [];
+  if (chosen.length === 0) return allSlides;
+
+  return chosen.map((slide, index) => {
+    const title = slide.project
+      ? projectTitle(slide.project)
+      : (slide.title ?? "");
+
+    return {
+      src: slide.src,
+      width: slide.width,
+      height: slide.height,
+      title,
+      alt:
+        slide.alt ??
+        [title, `image ${index + 1}`, "photographed by Nina Raasch"]
+          .filter(Boolean)
+          .join(", "),
+    };
+  });
 }

@@ -13,7 +13,6 @@ export const projectsQuery = defineQuery(`
       },
       "images": images[defined(asset)]{
         alt,
-        featured,
         "src": asset->url,
         "width": asset->metadata.dimensions.width,
         "height": asset->metadata.dimensions.height
@@ -27,5 +26,21 @@ export const contactQuery = defineQuery(`
     links[]{label, text, href},
     lists[]{label, items},
     exhibitions
+  }
+`);
+
+export const homepageQuery = defineQuery(`
+  *[_type == "homepage"][0]{
+    "slides": slides[defined(image.asset)]{
+      title,
+      "alt": image.alt,
+      "src": image.asset->url,
+      "width": image.asset->metadata.dimensions.width,
+      "height": image.asset->metadata.dimensions.height,
+      "project": *[_type == "project" && references(^.image.asset._ref)][0]{
+        campaign,
+        client
+      }
+    }
   }
 `);

@@ -52,14 +52,6 @@ export const project = defineType({
           options: { hotspot: true },
           fields: [
             defineField({
-              name: "featured",
-              title: "Show on homepage",
-              type: "boolean",
-              description:
-                "Include this image in the homepage slideshow. If no image anywhere is selected, every image is shown.",
-              initialValue: false,
-            }),
-            defineField({
               name: "alt",
               title: "Alt text",
               type: "string",
