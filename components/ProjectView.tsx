@@ -115,18 +115,21 @@ export function ProjectView({
         </div>
 
         <div className="flex min-h-[var(--nav-height)] items-baseline justify-between p-[var(--page-margin)] nav:px-[var(--page-margin)] nav:py-[13px]">
-          <button
-            type="button"
-            aria-expanded={showIndex}
-            data-active={showIndex}
-            onClick={toggleIndex}
-            className="underline-reveal pointer-events-auto"
-          >
-            Index
-          </button>
-          <p>
-            {currentIndex + 1}/{slides.length}
-          </p>
+          {showIndex ? null : (
+            <>
+              <button
+                type="button"
+                aria-expanded={showIndex}
+                onClick={toggleIndex}
+                className="underline-reveal pointer-events-auto"
+              >
+                Index
+              </button>
+              <p>
+                {currentIndex + 1}/{slides.length}
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>
