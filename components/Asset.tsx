@@ -10,6 +10,7 @@ type AssetProps = {
   alt: string;
   sizes: string;
   priority?: boolean;
+  aspectRatio?: string;
   className?: string;
 };
 
@@ -20,6 +21,7 @@ export function Asset({
   alt,
   sizes,
   priority = false,
+  aspectRatio,
   className = "",
 }: AssetProps) {
   const [loaded, setLoaded] = useState(false);
@@ -27,7 +29,7 @@ export function Asset({
   return (
     <div
       className={`relative overflow-hidden bg-placeholder ${className}`}
-      style={{ aspectRatio: `${width}/${height}` }}
+      style={{ aspectRatio: aspectRatio ?? `${width}/${height}` }}
     >
       <Image
         src={src}

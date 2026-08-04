@@ -7,6 +7,8 @@ export type ProjectImage = {
 export type Project = {
   slug: string;
   title: string;
+  campaign: string;
+  client: string;
   images: ProjectImage[];
 };
 
@@ -19,6 +21,8 @@ export const projects: Project[] = [
   {
     slug: "polish-vogue-january",
     title: "Polish Vogue — January",
+    campaign: "January",
+    client: "Polish Vogue",
     images: [
       {
         src: "/projects/polish-vogue-january/Vogue-Polska_Twins_Nina-Raasch_Sophie-Ozra-Cloarec_01_sRGB_2000px.webp",
@@ -100,6 +104,8 @@ export const projects: Project[] = [
   {
     slug: "bottega-veneta-pan-daijing",
     title: "Bottega Veneta Special featuring Pan Daijing",
+    campaign: "Pan Daijing",
+    client: "Bottega Veneta",
     images: [
       {
         src: "/projects/bottega-veneta-pan-daijing/NR-Magazine_Pan-Daijing_Nina-Raasch_003_LR_sRGB_1800px.webp",
@@ -166,6 +172,8 @@ export const projects: Project[] = [
   {
     slug: "elle-us-annie-shapero",
     title: "ELLE U.S. — Annie Shapero",
+    campaign: "Annie Shapero",
+    client: "ELLE U.S.",
     images: [
       {
         src: "/projects/elle-us-annie-shapero/Annie-Shapero_by_Nina-Raasch_01_sRGB_2000px.webp",
@@ -187,6 +195,8 @@ export const projects: Project[] = [
   {
     slug: "aesop-reaburn-campaign",
     title: "AESOP — Reaburn Campaign",
+    campaign: "Reaburn Campaign",
+    client: "AESOP",
     images: [
       {
         src: "/projects/aesop-reaburn-campaign/AESOP-Reaburn_Nina-Raasch_01_LR_sRGB_web.webp",
@@ -211,6 +221,21 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+export type ProjectSection = Project & {
+  startIndex: number;
+};
+
+export const projectSections: ProjectSection[] = projects.reduce<ProjectSection[]>(
+  (sections, project) => {
+    const previous = sections[sections.length - 1];
+    const startIndex = previous
+      ? previous.startIndex + previous.images.length
+      : 0;
+    return [...sections, { ...project, startIndex }];
+  },
+  [],
+);
 
 export const slides: Slide[] = projects.flatMap((project) =>
   project.images.map((image, index) => ({

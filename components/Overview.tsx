@@ -1,71 +1,48 @@
 "use client";
 
-import type { Slide } from "@/data/projects";
-import { useViewportWidth } from "@/hooks/useViewport";
-import {
-  GRID_GAP,
-  pageMargin,
-  spanForIndex,
-  teaserContainerWidth,
-  teaserItemWidth,
-} from "@/lib/grid";
-import { packMasonry } from "@/lib/masonry";
+import { projectSections } from "@/data/projects";
 import { Asset } from "./Asset";
 
 type OverviewProps = {
-  slides: Slide[];
   hasOpened: boolean;
-  onSelect: (index: number) => void;
+  onOpen: (slug: string) => void;
 };
 
-export function Overview({ slides, hasOpened, onSelect }: OverviewProps) {
-  const viewportWidth = useViewportWidth();
-  const margin = pageMargin(viewportWidth);
-  const containerWidth = teaserContainerWidth(viewportWidth);
-
-  const layout = packMasonry(
-    slides.map((slide, index) => {
-      const width = teaserItemWidth(viewportWidth, spanForIndex(index));
-      return { width, height: (width * slide.height) / slide.width };
-    }),
-    containerWidth,
-    GRID_GAP,
-  );
-
+export function Overview({ hasOpened, onOpen }: OverviewProps) {
   return (
     <div
-      className="hide-scrollbar overflow-y-scroll"
-      style={{ height: `calc(100dvh - var(--nav-height) - 20px)` }}
+      className="hide-scrollbar overflow-y-auto"
+      style={{ maxHeight: "calc(100dvh - var(--nav-height) - 20px)" }}
     >
-      <div
-        className="relative mb-5"
-        style={{
-          height: layout.height,
-          marginLeft: margin,
-          marginRight: margin,
-        }}
-      >
-        {slides.map((slide, index) => {
-          const box = layout.boxes[index];
+      <div className="grid grid-cols-2 gap-5 px-[var(--page-margin)] pb-5 nav:grid-cols-5 nav:pb-[30px]">
+        {projectSections.map((section) => {
+          const cover = section.images[0];
 
           return (
             <button
-              key={slide.src}
+              key={section.slug}
               type="button"
-              onClick={() => onSelect(index)}
-              className="absolute flex cursor-pointer"
-              style={{ top: box.y, left: box.x, width: box.width }}
+              onClick={() => onOpen(section.slug)}
+              className="group relative block w-full"
             >
               {hasOpened ? (
                 <Asset
-                  src={slide.src}
-                  width={slide.width}
-                  height={slide.height}
-                  alt={slide.alt}
-                  sizes="(max-width: 700px) 50vw, 25vw"
+                  src={cover.src}
+                  width={cover.width}
+                  height={cover.height}
+                  alt={`${section.campaign} for ${section.client}, photographed by Nina Raasch`}
+                  sizes="(max-width: 700px) 50vw, 20vw"
+                  aspectRatio="4/5"
                   className="pointer-events-none w-full"
                 />
-              ) : null}
+              ) : (
+                <div className="aspect-[4/5] w-full bg-placeholder" />
+              )}
+
+              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-ink/45 p-4 text-center text-paper opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100">
+                <span className="italic">{section.campaign}</span>
+                <span>{section.client}</span>
+              </div>
             </button>
           );
         })}

@@ -152,7 +152,10 @@ img {
 }
 
 .panel {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     overflow: hidden;
     background-color: var(--color-paper);
     opacity: 0;
