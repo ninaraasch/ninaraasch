@@ -15,6 +15,7 @@ type NavigationProps = {
   onToggleMenu: (menu: MenuName) => void;
   onCloseMenu: () => void;
   onOpenProject: (slug: string) => void;
+  onHome: () => void;
 };
 
 export function Navigation({
@@ -25,6 +26,7 @@ export function Navigation({
   onToggleMenu,
   onCloseMenu,
   onOpenProject,
+  onHome,
 }: NavigationProps) {
   const isOpen = openMenu !== null;
 
@@ -73,6 +75,7 @@ export function Navigation({
         <div className="pointer-events-auto relative z-[2] grid min-h-[var(--nav-height)] grid-cols-2 items-baseline gap-5 bg-paper p-[var(--page-margin)] nav:grid-cols-12 nav:px-[var(--page-margin)] nav:py-[13px]">
           <Link
             href="/"
+            onClick={onHome}
             className="logotype col-start-1 row-start-1 nav:col-span-2 nav:col-start-1"
           >
             Nina Raasch
@@ -87,7 +90,7 @@ export function Navigation({
               onClick={() => onToggleMenu("overview")}
               className="underline-reveal shrink-0"
             >
-              Overview
+              overview
             </button>
             <button
               type="button"
@@ -97,7 +100,7 @@ export function Navigation({
               onClick={() => onToggleMenu("contact")}
               className="underline-reveal shrink-0"
             >
-              Contact
+              contact
             </button>
             <p className="shrink-0">
               {currentIndex + 1}/{slides.length}
@@ -107,7 +110,7 @@ export function Navigation({
 
           <div className="col-start-2 row-start-1 flex justify-end gap-2.5 justify-self-end nav:col-span-5 nav:col-start-8 nav:gap-5 nav:justify-self-stretch">
             <button type="button" aria-disabled="true" className="underline-reveal">
-              Prints
+              prints
             </button>
           </div>
         </div>

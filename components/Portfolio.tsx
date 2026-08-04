@@ -39,6 +39,11 @@ export function Portfolio({ slides }: { slides: Slide[] }) {
     setOpenProjectSlug(null);
   };
 
+  const goHome = () => {
+    closeProject();
+    setOpenMenu(null);
+  };
+
   const returnToIndex = () => {
     closeProject();
     setOpenMenu("overview");
@@ -70,6 +75,7 @@ export function Portfolio({ slides }: { slides: Slide[] }) {
         onToggleMenu={toggleMenu}
         onCloseMenu={() => setOpenMenu(null)}
         onOpenProject={openProject}
+        onHome={goHome}
       />
 
       {project ? (
