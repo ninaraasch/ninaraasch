@@ -13,6 +13,7 @@ export const projectsQuery = defineQuery(`
       },
       "images": images[defined(asset)]{
         alt,
+        featured,
         "src": asset->url,
         "width": asset->metadata.dimensions.width,
         "height": asset->metadata.dimensions.height

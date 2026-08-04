@@ -12,10 +12,16 @@ import { Slideshow } from "./Slideshow";
 type PortfolioProps = {
   sections: ProjectSection[];
   slides: Slide[];
+  homeSlides: Slide[];
   contact: ContactContent;
 };
 
-export function Portfolio({ sections, slides, contact }: PortfolioProps) {
+export function Portfolio({
+  sections,
+  slides,
+  homeSlides,
+  contact,
+}: PortfolioProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [openMenu, setOpenMenu] = useState<MenuName | null>(null);
   const [hasOpenedOverview, setHasOpenedOverview] = useState(false);
@@ -27,7 +33,9 @@ export function Portfolio({ sections, slides, contact }: PortfolioProps) {
   );
 
   const step = (offset: number) =>
-    setCurrentIndex((index) => (index + offset + slides.length) % slides.length);
+    setCurrentIndex(
+      (index) => (index + offset + homeSlides.length) % homeSlides.length,
+    );
 
   const toggleMenu = (menu: MenuName) => {
     setOpenMenu((current) => (current === menu ? null : menu));
@@ -69,14 +77,14 @@ export function Portfolio({ sections, slides, contact }: PortfolioProps) {
 
   return (
     <main className="relative h-dvh overflow-hidden">
-      <Slideshow slides={slides} currentIndex={currentIndex} />
+      <Slideshow slides={homeSlides} currentIndex={currentIndex} />
 
       <EdgeZones onPrevious={() => step(-1)} onNext={() => step(1)} />
 
       <Navigation
         sections={sections}
         contact={contact}
-        slides={slides}
+        slides={homeSlides}
         currentIndex={currentIndex}
         openMenu={openMenu}
         hasOpenedOverview={hasOpenedOverview}

@@ -1,5 +1,6 @@
 import { Portfolio } from "@/components/Portfolio";
 import {
+  toHomeSlides,
   toProjectSections,
   toSlides,
   type ContactContent,
@@ -15,11 +16,13 @@ export default async function Home() {
   ]);
 
   const sections = toProjectSections(projects);
+  const slides = toSlides(sections);
 
   return (
     <Portfolio
       sections={sections}
-      slides={toSlides(sections)}
+      slides={slides}
+      homeSlides={toHomeSlides(slides)}
       contact={contact}
     />
   );

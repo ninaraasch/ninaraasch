@@ -3,6 +3,7 @@ export type ProjectImage = {
   width: number;
   height: number;
   alt?: string | null;
+  featured?: boolean | null;
 };
 
 export type SanityProject = {
@@ -78,4 +79,9 @@ export function toSlides(sections: ProjectSection[]): Slide[] {
         `${section.title}, image ${index + 1}, photographed by Nina Raasch`,
     })),
   );
+}
+
+export function toHomeSlides(slides: Slide[]): Slide[] {
+  const featured = slides.filter((slide) => slide.featured);
+  return featured.length > 0 ? featured : slides;
 }
