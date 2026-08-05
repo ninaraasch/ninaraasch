@@ -114,3 +114,13 @@ export function toHomeSlides(homepage: Homepage, allSlides: Slide[]): Slide[] {
     };
   });
 }
+
+export type ImprintSection = {
+  heading?: string | null;
+  body?: string | null;
+};
+
+export type ImprintContent = {
+  title?: string | null;
+  sections?: ImprintSection[] | null;
+} | null;

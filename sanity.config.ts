@@ -35,6 +35,12 @@ export default defineConfig({
               .child(
                 S.document().schemaType("contact").documentId("contact"),
               ),
+            S.listItem()
+              .title("Imprint")
+              .id("imprint")
+              .child(
+                S.document().schemaType("imprint").documentId("imprint"),
+              ),
           ]),
     }),
     media(),

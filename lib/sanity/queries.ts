@@ -44,3 +44,10 @@ export const homepageQuery = defineQuery(`
     }
   }
 `);
+
+export const imprintQuery = defineQuery(`
+  *[_type == "imprint"][0]{
+    title,
+    sections[]{heading, body}
+  }
+`);
