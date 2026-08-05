@@ -5,20 +5,23 @@ import {
   toSlides,
   type ContactContent,
   type Homepage,
+  type Print,
   type SanityProject,
 } from "@/lib/content";
 import { sanityClient } from "@/lib/sanity/client";
 import {
   contactQuery,
   homepageQuery,
+  printsQuery,
   projectsQuery,
 } from "@/lib/sanity/queries";
 
 export default async function Home() {
-  const [projects, contact, homepage] = await Promise.all([
+  const [projects, contact, homepage, prints] = await Promise.all([
     sanityClient.fetch<SanityProject[]>(projectsQuery),
     sanityClient.fetch<ContactContent>(contactQuery),
     sanityClient.fetch<Homepage>(homepageQuery),
+    sanityClient.fetch<Print[]>(printsQuery),
   ]);
 
   const sections = toProjectSections(projects);
@@ -30,6 +33,7 @@ export default async function Home() {
       slides={slides}
       homeSlides={toHomeSlides(homepage, slides)}
       contact={contact}
+      prints={prints}
     />
   );
 }

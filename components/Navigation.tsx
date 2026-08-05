@@ -3,15 +3,22 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { useMountEffect } from "@/hooks/useMountEffect";
-import type { ContactContent, ProjectSection, Slide } from "@/lib/content";
+import type {
+  ContactContent,
+  Print,
+  ProjectSection,
+  Slide,
+} from "@/lib/content";
 import { Contact } from "./Contact";
 import { Overview } from "./Overview";
+import { Prints } from "./Prints";
 
-export type MenuName = "overview" | "contact";
+export type MenuName = "overview" | "contact" | "prints";
 
 type NavigationProps = {
   sections: ProjectSection[];
   contact: ContactContent;
+  prints: Print[];
   slides: Slide[];
   currentIndex: number;
   openMenu: MenuName | null;
@@ -25,6 +32,7 @@ type NavigationProps = {
 export function Navigation({
   sections,
   contact,
+  prints,
   slides,
   currentIndex,
   openMenu,
@@ -89,6 +97,17 @@ export function Navigation({
           </div>
 
           <div
+            id="prints-panel"
+            className="panel"
+            data-open={openMenu === "prints"}
+            inert={openMenu !== "prints"}
+          >
+            <div className="panel-content pt-5">
+              <Prints prints={prints} />
+            </div>
+          </div>
+
+          <div
             id="contact-panel"
             className="panel"
             data-open={openMenu === "contact"}
@@ -139,9 +158,26 @@ export function Navigation({
           </div>
 
           <div className="col-start-2 row-start-1 flex justify-end gap-2.5 justify-self-end nav:col-span-5 nav:col-start-8 nav:gap-5 nav:justify-self-stretch">
-            <button type="button" aria-disabled="true" className="underline-reveal">
-              prints
-            </button>
+            {prints.length > 0 ? (
+              <button
+                type="button"
+                aria-expanded={openMenu === "prints"}
+                aria-controls="prints-panel"
+                data-active={openMenu === "prints"}
+                onClick={() => onToggleMenu("prints")}
+                className="underline-reveal"
+              >
+                prints
+              </button>
+            ) : (
+              <button
+                type="button"
+                aria-disabled="true"
+                className="underline-reveal"
+              >
+                prints
+              </button>
+            )}
           </div>
         </div>
       </div>

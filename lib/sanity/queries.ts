@@ -51,3 +51,19 @@ export const imprintQuery = defineQuery(`
     sections[]{heading, body}
   }
 `);
+
+export const printsQuery = defineQuery(`
+  *[_type == "print" && defined(image.asset) && defined(url)]
+    | order(orderRank asc) {
+      "id": _id,
+      title,
+      size,
+      edition,
+      price,
+      url,
+      "alt": image.alt,
+      "src": image.asset->url,
+      "width": image.asset->metadata.dimensions.width,
+      "height": image.asset->metadata.dimensions.height
+    }
+`);

@@ -29,6 +29,12 @@ export default defineConfig({
               S,
               context,
             }),
+            orderableDocumentListDeskItem({
+              type: "print",
+              title: "Prints",
+              S,
+              context,
+            }),
             S.listItem()
               .title("Contact")
               .id("contact")

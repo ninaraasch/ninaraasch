@@ -124,3 +124,12 @@ export type ImprintContent = {
   title?: string | null;
   sections?: ImprintSection[] | null;
 } | null;
+
+export type Print = ProjectImage & {
+  id: string;
+  title: string;
+  size?: string | null;
+  edition?: string | null;
+  price?: string | null;
+  url: string;
+};

@@ -1,7 +1,12 @@
 "use client";
 
 import { useRef, useState } from "react";
-import type { ContactContent, ProjectSection, Slide } from "@/lib/content";
+import type {
+  ContactContent,
+  Print,
+  ProjectSection,
+  Slide,
+} from "@/lib/content";
 import { useMountEffect } from "@/hooks/useMountEffect";
 import { Cursor } from "./Cursor";
 import { EdgeZones } from "./EdgeZones";
@@ -14,6 +19,7 @@ type PortfolioProps = {
   slides: Slide[];
   homeSlides: Slide[];
   contact: ContactContent;
+  prints: Print[];
 };
 
 export function Portfolio({
@@ -21,6 +27,7 @@ export function Portfolio({
   slides,
   homeSlides,
   contact,
+  prints,
 }: PortfolioProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [openMenu, setOpenMenu] = useState<MenuName | null>(null);
@@ -84,6 +91,7 @@ export function Portfolio({
       <Navigation
         sections={sections}
         contact={contact}
+        prints={prints}
         slides={homeSlides}
         currentIndex={currentIndex}
         openMenu={openMenu}
