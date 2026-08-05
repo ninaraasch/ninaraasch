@@ -6,7 +6,10 @@ import { sanityClient } from "@/lib/sanity/client";
 import { imprintQuery } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
-  title: "Imprint — Nina Raasch",
+  title: "Imprint",
+  description:
+    "Legal notice, copyright and contact details for the photographer Nina Raasch, Berlin.",
+  alternates: { canonical: "/imprint" },
 };
 
 export default async function ImprintPage() {
@@ -21,9 +24,9 @@ export default async function ImprintPage() {
         >
           Nina Raasch
         </Link>
-        <p className="col-start-2 row-start-1 justify-self-end nav:col-span-5 nav:col-start-3 nav:justify-self-start">
+        <h1 className="col-start-2 row-start-1 justify-self-end nav:col-span-5 nav:col-start-3 nav:justify-self-start">
           {imprint?.title ?? "Imprint"}
-        </p>
+        </h1>
         <Link
           href="/"
           aria-label="Back to home"
