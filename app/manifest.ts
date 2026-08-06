@@ -9,7 +9,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description:
       "Photographer working between London and Berlin. Fashion, editorial and commercial work.",
     start_url: "/",
-    display: "standalone",
+    display: "browser",
     background_color: "#f3f3f3",
     theme_color: "#f3f3f3",
     icons: [
