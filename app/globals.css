@@ -7,6 +7,7 @@
     --font-sans: var(--font-helvetica-neue), Helvetica, Arial, sans-serif;
     --font-display: var(--font-helvetica-neue-bold), Helvetica, Arial, sans-serif;
     --ease-mask: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
     --breakpoint-nav: 701px;
 }
 
@@ -59,6 +60,60 @@ body {
     a,
     button {
         cursor: none;
+    }
+}
+
+.preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-paper);
+    transform: translateY(0);
+    transition: transform 0.7s var(--ease-out-strong) 0.15s;
+    will-change: transform;
+}
+
+.preloader[data-phase="leaving"] {
+    transform: translateY(-100%);
+}
+
+.preloader[data-phase="gone"] {
+    transform: translateY(-100%);
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.preloader-mark,
+.preloader-counter {
+    transition: opacity 0.2s var(--ease-out-strong);
+}
+
+.preloader[data-phase="leaving"] .preloader-mark,
+.preloader[data-phase="gone"] .preloader-mark,
+.preloader[data-phase="leaving"] .preloader-counter,
+.preloader[data-phase="gone"] .preloader-counter {
+    opacity: 0;
+}
+
+.preloader-counter {
+    position: absolute;
+    right: var(--page-margin);
+    bottom: var(--page-margin);
+    font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .preloader {
+        transition: opacity 0.3s var(--ease-out-strong);
+    }
+
+    .preloader[data-phase="leaving"],
+    .preloader[data-phase="gone"] {
+        transform: none;
+        opacity: 0;
     }
 }
 

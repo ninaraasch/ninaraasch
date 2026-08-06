@@ -11,6 +11,7 @@ import { useMountEffect } from "@/hooks/useMountEffect";
 import { Cursor } from "./Cursor";
 import { EdgeZones } from "./EdgeZones";
 import { Navigation, type MenuName } from "./Navigation";
+import { Preloader } from "./Preloader";
 import { ProjectView } from "./ProjectView";
 import { Slideshow } from "./Slideshow";
 
@@ -116,6 +117,8 @@ export function Portfolio({
       ) : null}
 
       <Cursor />
+
+      <Preloader />
     </main>
   );
 }
