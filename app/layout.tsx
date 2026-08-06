@@ -18,7 +18,7 @@ const helveticaNeueBold = localFont({
   display: "swap",
 });
 
-const title = "Nina Raasch — Photographer, London and Berlin";
+const title = "Nina Raasch — Photographer";
 const description =
   "Photographer working between London and Berlin. Fashion, editorial and commercial work for Mytheresa, AESOP, Bottega Veneta, ELLE and Vogue.";
 
