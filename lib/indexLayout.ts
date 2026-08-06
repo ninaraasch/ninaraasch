@@ -15,7 +15,7 @@ const MOBILE_BREAKPOINT = 700;
 export function indexMetrics(viewportWidth: number) {
   const isMobile = viewportWidth <= MOBILE_BREAKPOINT;
   const margin = isMobile ? 10 : 20;
-  const columns = isMobile ? 2 : 7;
+  const columns = isMobile ? 3 : 7;
   const containerWidth = viewportWidth - margin * 2;
   const targetHeight =
     (containerWidth - (columns - 1) * GAP) / columns / PORTRAIT_RATIO;

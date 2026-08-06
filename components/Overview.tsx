@@ -37,7 +37,7 @@ export function Overview({ sections, hasOpened, onOpen }: OverviewProps) {
               <div className="aspect-[4/5] w-full bg-placeholder" />
             )}
 
-            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-ink/45 p-4 text-center text-paper opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100">
+            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1.5 p-4 text-center text-paper opacity-100 transition-opacity duration-300 ease-out nav:bg-ink/45 nav:opacity-0 nav:group-hover:opacity-100">
               {section.campaign ? (
                 <span className="italic">{section.campaign}</span>
               ) : null}
