@@ -26,20 +26,25 @@ export function Asset({
 }: AssetProps) {
   const [loaded, setLoaded] = useState(false);
 
+  const markLoadedIfCached = (node: HTMLImageElement | null) => {
+    if (node?.complete) setLoaded(true);
+  };
+
   return (
     <div
       className={`relative overflow-hidden bg-placeholder ${className}`}
       style={{ aspectRatio: aspectRatio ?? `${width}/${height}` }}
     >
       <Image
+        ref={markLoadedIfCached}
         src={src}
         alt={alt}
         fill
         sizes={sizes}
         priority={priority}
         onLoad={() => setLoaded(true)}
-        className={`object-cover transition-opacity duration-500 ease-out ${
-          loaded ? "opacity-100" : "opacity-0"
+        className={`object-cover ${
+          loaded ? "opacity-100 transition-opacity duration-300 ease-out" : "opacity-0"
         }`}
       />
     </div>
