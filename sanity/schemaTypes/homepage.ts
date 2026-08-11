@@ -38,7 +38,7 @@ export const homepage = defineType({
               title: "Title",
               type: "string",
               description:
-                "Only needed for images that are not part of a project. Otherwise the project name is used automatically.",
+                "Shown in the header for this image. Leave empty to use the project name automatically.",
             }),
           ],
           preview: {

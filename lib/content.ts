@@ -97,9 +97,9 @@ export function toHomeSlides(homepage: Homepage, allSlides: Slide[]): Slide[] {
   if (chosen.length === 0) return allSlides;
 
   return chosen.map((slide, index) => {
-    const title = slide.project
-      ? projectTitle(slide.project)
-      : (slide.title ?? "");
+    const title =
+      slide.title?.trim() ||
+      (slide.project ? projectTitle(slide.project) : "");
 
     return {
       src: slide.src,
