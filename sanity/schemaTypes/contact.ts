@@ -15,7 +15,9 @@ export const contact = defineType({
       name: "links",
       title: "Links",
       type: "array",
-      description: "Email, Instagram, and anything else with a single value.",
+      description:
+        "Email, Instagram, and anything else with a single value. Drag to reorder.",
+      options: { sortable: true },
       of: [
         defineArrayMember({
           type: "object",
@@ -39,6 +41,7 @@ export const contact = defineType({
       name: "lists",
       title: "Lists",
       type: "array",
+      options: { sortable: true },
       description:
         "Selected clients, selected artists, magazine specials. Each entry is shown separated by a vertical bar.",
       of: [
@@ -51,8 +54,9 @@ export const contact = defineType({
               name: "items",
               title: "Entries",
               type: "array",
+              description: "Drag to reorder. Shown separated by a vertical bar.",
               of: [defineArrayMember({ type: "string" })],
-              options: { layout: "tags" },
+              options: { sortable: true },
             }),
           ],
           preview: {
@@ -68,7 +72,9 @@ export const contact = defineType({
       name: "exhibitions",
       title: "Exhibitions",
       type: "array",
-      description: "One line each, for example: Title | Year | Venue | City",
+      description:
+        "One line each, for example: Title | Year | Venue | City. Drag to reorder.",
+      options: { sortable: true },
       of: [defineArrayMember({ type: "string" })],
     }),
   ],

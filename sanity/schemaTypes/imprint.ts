@@ -15,7 +15,9 @@ export const imprint = defineType({
       name: "sections",
       title: "Sections",
       type: "array",
-      description: "Each section is a heading with its text below it.",
+      description:
+        "Each section is a heading with its text below it. Drag to reorder.",
+      options: { sortable: true },
       of: [
         defineArrayMember({
           type: "object",

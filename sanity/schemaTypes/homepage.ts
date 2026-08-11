@@ -11,6 +11,7 @@ export const homepage = defineType({
       type: "array",
       description:
         "Images shown on the homepage, in this order. Drag to reorder. Leave empty to show every project image.",
+      options: { sortable: true },
       of: [
         defineArrayMember({
           type: "object",
