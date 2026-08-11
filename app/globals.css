@@ -67,51 +67,110 @@ body {
     position: fixed;
     inset: 0;
     z-index: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-paper);
-    transform: translateY(0);
-    transition: transform 0.7s var(--ease-out-strong) 0.15s;
-    will-change: transform;
-}
-
-.preloader[data-phase="leaving"] {
-    transform: translateY(-100%);
+    overflow: hidden;
 }
 
 .preloader[data-phase="gone"] {
-    transform: translateY(-100%);
     visibility: hidden;
     pointer-events: none;
 }
 
-.preloader-mark,
-.preloader-counter {
-    transition: opacity 0.2s var(--ease-out-strong);
+.preloader-sheet {
+    position: absolute;
+    inset: 0;
+    transform: translateY(0);
+    transition: transform 0.9s var(--ease-out-strong);
+    will-change: transform;
 }
 
-.preloader[data-phase="leaving"] .preloader-mark,
-.preloader[data-phase="gone"] .preloader-mark,
-.preloader[data-phase="leaving"] .preloader-counter,
-.preloader[data-phase="gone"] .preloader-counter {
-    opacity: 0;
+.preloader-content {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-paper);
+    transform: translateY(0);
+    transition: transform 0.9s var(--ease-out-strong);
+    will-change: transform;
 }
 
-.preloader-counter {
+.preloader[data-phase="leaving"] .preloader-sheet,
+.preloader[data-phase="gone"] .preloader-sheet {
+    transform: translateY(-100%);
+}
+
+.preloader[data-phase="leaving"] .preloader-content,
+.preloader[data-phase="gone"] .preloader-content {
+    transform: translateY(100%);
+}
+
+.preloader-mark {
+    position: absolute;
+    top: var(--page-margin);
+    left: var(--page-margin);
+}
+
+@media (min-width: 701px) {
+    .preloader-mark {
+        top: 13px;
+    }
+}
+
+.preloader-frame {
+    position: absolute;
+    top: var(--page-inset);
+    right: var(--page-margin);
+    bottom: var(--page-inset);
+    left: var(--page-margin);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preloader-frame img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.preloader-count {
     position: absolute;
     right: var(--page-margin);
     bottom: var(--page-margin);
+    display: flex;
+    color: #ffffff;
+    mix-blend-mode: difference;
+    line-height: 1;
     font-variant-numeric: tabular-nums;
 }
 
+.wheel {
+    display: block;
+    height: 1em;
+    overflow: hidden;
+}
+
+.wheel-track {
+    display: block;
+    will-change: transform;
+}
+
+.wheel-track span {
+    display: grid;
+    place-items: center;
+    height: 1em;
+}
+
 @media (prefers-reduced-motion: reduce) {
-    .preloader {
-        transition: opacity 0.3s var(--ease-out-strong);
+    .preloader-sheet,
+    .preloader-content {
+        transition: opacity 0.3s ease-out;
     }
 
-    .preloader[data-phase="leaving"],
-    .preloader[data-phase="gone"] {
+    .preloader[data-phase="leaving"] .preloader-sheet,
+    .preloader[data-phase="gone"] .preloader-sheet,
+    .preloader[data-phase="leaving"] .preloader-content,
+    .preloader[data-phase="gone"] .preloader-content {
         transform: none;
         opacity: 0;
     }

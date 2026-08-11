@@ -2,10 +2,13 @@
 
 import { useRef, useState } from "react";
 import { useMountEffect } from "@/hooks/useMountEffect";
+import type { Slide } from "@/lib/content";
 
-const MIN_DURATION = 1600;
-const SETTLE = 350;
+const MIN_DURATION = 2800;
+const SETTLE = 400;
 const LIFT = 900;
+const STEP = 1;
+const MAX_FRAMES = 12;
 
 type Phase = "loading" | "leaving" | "gone";
 
@@ -13,35 +16,115 @@ function easeOut(progress: number) {
   return 1 - Math.pow(1 - progress, 3);
 }
 
-export function Preloader() {
+function preloadUrl(src: string) {
+  return `${src}?w=900&q=70&fit=max&auto=format`;
+}
+
+function Wheel({ trackRef }: { trackRef: React.RefObject<HTMLSpanElement | null> }) {
+  return (
+    <span className="wheel">
+      <span ref={trackRef} className="wheel-track">
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((digit, index) => (
+          <span key={index}>{digit}</span>
+        ))}
+      </span>
+    </span>
+  );
+}
+
+export function Preloader({ slides }: { slides: Slide[] }) {
   const [phase, setPhase] = useState<Phase>("loading");
-  const counterRef = useRef<HTMLSpanElement>(null);
+  const hundreds = useRef<HTMLSpanElement>(null);
+  const tens = useRef<HTMLSpanElement>(null);
+  const units = useRef<HTMLSpanElement>(null);
+  const count = useRef<HTMLDivElement>(null);
+  const frame = useRef<HTMLImageElement>(null);
 
   useMountEffect(() => {
+    const sources = slides.slice(0, MAX_FRAMES).map((slide) => slide.src);
+    if (sources.length === 0) return;
+
     const start = performance.now();
-    let loaded = document.readyState === "complete";
-    let frame = 0;
+    const arrived: string[] = [];
+    let windowLoaded = document.readyState === "complete";
+    let animation = 0;
+    let shown = -1;
+    let travel = 0;
     let settleTimer = 0;
     let goneTimer = 0;
 
     const onLoad = () => {
-      loaded = true;
+      windowLoaded = true;
     };
-    if (!loaded) window.addEventListener("load", onLoad);
+    if (!windowLoaded) window.addEventListener("load", onLoad);
 
-    const tick = () => {
-      const elapsed = performance.now() - start;
-      const ceiling = loaded ? 1 : 0.99;
-      const value = Math.min(easeOut(Math.min(elapsed / MIN_DURATION, 1)), ceiling);
+    const preloaders = sources.map((src) => {
+      const url = preloadUrl(src);
+      const image = new Image();
+      image.onload = () => {
+        arrived.push(url);
+        if (frame.current && !frame.current.src) frame.current.src = url;
+      };
+      image.src = url;
+      return image;
+    });
 
-      if (counterRef.current) {
-        counterRef.current.textContent = String(Math.round(value * 100));
+    const margin = window.innerWidth <= 700 ? 10 : 20;
+    const measure = () => {
+      travel = Math.max(
+        0,
+        window.innerHeight - margin * 2 - (count.current?.offsetHeight ?? 0),
+      );
+    };
+    measure();
+    window.addEventListener("resize", measure);
+
+    const roll = (track: HTMLSpanElement | null, position: number) => {
+      if (track) track.style.transform = `translateY(${-position * STEP}em)`;
+    };
+
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const byTime = easeOut(Math.min(elapsed / MIN_DURATION, 1));
+      const byAssets = arrived.length / sources.length;
+      const progress = windowLoaded
+        ? byTime
+        : Math.min(byTime, byAssets, 0.99);
+
+      const value = progress * 100;
+      const whole = Math.floor(value);
+      const fraction = value - whole;
+      const unitDigit = whole % 10;
+      const tenDigit = Math.floor(whole / 10) % 10;
+
+      roll(units.current, unitDigit + fraction);
+      roll(tens.current, tenDigit + (unitDigit === 9 ? fraction : 0));
+      roll(
+        hundreds.current,
+        Math.floor(whole / 100) + (tenDigit === 9 && unitDigit === 9 ? fraction : 0),
+      );
+
+      if (count.current) {
+        count.current.style.transform = `translateY(${-progress * travel}px)`;
       }
 
-      if (value < 1) {
-        frame = requestAnimationFrame(tick);
+      if (arrived.length > 0) {
+        const next = Math.min(
+          arrived.length - 1,
+          Math.floor(progress * sources.length),
+        );
+        if (next !== shown) {
+          shown = next;
+          if (frame.current) frame.current.src = arrived[next];
+        }
+      }
+
+      if (progress < 1) {
+        animation = requestAnimationFrame(tick);
         return;
       }
+
+      if (frame.current) frame.current.src = preloadUrl(sources[0]);
 
       settleTimer = window.setTimeout(() => {
         setPhase("leaving");
@@ -49,13 +132,17 @@ export function Preloader() {
       }, SETTLE);
     };
 
-    frame = requestAnimationFrame(tick);
+    animation = requestAnimationFrame(tick);
 
     return () => {
-      cancelAnimationFrame(frame);
+      cancelAnimationFrame(animation);
       window.clearTimeout(settleTimer);
       window.clearTimeout(goneTimer);
       window.removeEventListener("load", onLoad);
+      window.removeEventListener("resize", measure);
+      preloaders.forEach((image) => {
+        image.onload = null;
+      });
     };
   });
 
@@ -64,10 +151,23 @@ export function Preloader() {
       <noscript>
         <style>{".preloader { display: none; }"}</style>
       </noscript>
-      <span className="logotype preloader-mark">Nina Raasch</span>
-      <span ref={counterRef} className="preloader-counter">
-        0
-      </span>
+
+      <div className="preloader-sheet">
+        <div className="preloader-content">
+          <span className="logotype preloader-mark">Nina Raasch</span>
+
+          <div className="preloader-frame">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img ref={frame} alt="" />
+          </div>
+
+          <div ref={count} className="preloader-count">
+            <Wheel trackRef={hundreds} />
+            <Wheel trackRef={tens} />
+            <Wheel trackRef={units} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

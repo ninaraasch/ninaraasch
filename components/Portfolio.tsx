@@ -118,7 +118,7 @@ export function Portfolio({
 
       <Cursor />
 
-      <Preloader />
+      <Preloader slides={homeSlides} />
     </main>
   );
 }
