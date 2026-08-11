@@ -6,7 +6,7 @@ import type { Slide } from "@/lib/content";
 
 const MIN_DURATION = 2800;
 const SETTLE = 400;
-const LIFT = 900;
+const LIFT = 1400;
 const STEP = 1;
 const MAX_FRAMES = 12;
 
@@ -16,8 +16,8 @@ function easeOut(progress: number) {
   return 1 - Math.pow(1 - progress, 3);
 }
 
-function preloadUrl(src: string) {
-  return `${src}?w=900&q=70&fit=max&auto=format`;
+function preloadUrl(src: string, width = 900) {
+  return `${src}?w=${width}&q=75&fit=max&auto=format`;
 }
 
 function Wheel({ trackRef }: { trackRef: React.RefObject<HTMLSpanElement | null> }) {
@@ -58,8 +58,8 @@ export function Preloader({ slides }: { slides: Slide[] }) {
     };
     if (!windowLoaded) window.addEventListener("load", onLoad);
 
-    const preloaders = sources.map((src) => {
-      const url = preloadUrl(src);
+    const preloaders = sources.map((src, index) => {
+      const url = preloadUrl(src, index === 0 ? 2000 : 900);
       const image = new Image();
       image.onload = () => {
         arrived.push(url);
@@ -124,7 +124,7 @@ export function Preloader({ slides }: { slides: Slide[] }) {
         return;
       }
 
-      if (frame.current) frame.current.src = preloadUrl(sources[0]);
+      if (frame.current) frame.current.src = preloadUrl(sources[0], 2000);
 
       settleTimer = window.setTimeout(() => {
         setPhase("leaving");
@@ -154,7 +154,9 @@ export function Preloader({ slides }: { slides: Slide[] }) {
 
       <div className="preloader-sheet">
         <div className="preloader-content">
-          <span className="logotype preloader-mark">Nina Raasch</span>
+          <span className="preloader-mark">
+            <span className="logotype">Nina Raasch</span>
+          </span>
 
           <div className="preloader-frame">
             {/* eslint-disable-next-line @next/next/no-img-element */}
