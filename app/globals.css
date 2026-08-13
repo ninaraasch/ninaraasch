@@ -95,10 +95,13 @@ body {
 
 .preloader-mark {
     position: absolute;
-    top: var(--page-margin);
+    top: 50%;
     left: var(--page-margin);
     display: block;
     overflow: hidden;
+    color: #ffffff;
+    mix-blend-mode: difference;
+    transform: translateY(-50%);
 }
 
 .preloader-mark > span {
@@ -110,12 +113,6 @@ body {
 @keyframes preloader-rise {
     to {
         transform: translateY(0);
-    }
-}
-
-@media (min-width: 701px) {
-    .preloader-mark {
-        top: 13px;
     }
 }
 
@@ -148,11 +145,12 @@ body {
 
 .preloader-count {
     position: absolute;
+    top: 50%;
     right: var(--page-margin);
-    bottom: var(--page-margin);
     display: flex;
     color: #ffffff;
     mix-blend-mode: difference;
+    transform: translateY(-50%);
     line-height: 1;
     font-variant-numeric: tabular-nums;
     transition: opacity 0.25s ease-out;

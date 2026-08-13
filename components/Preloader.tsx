@@ -37,7 +37,6 @@ export function Preloader({ slides }: { slides: Slide[] }) {
   const hundreds = useRef<HTMLSpanElement>(null);
   const tens = useRef<HTMLSpanElement>(null);
   const units = useRef<HTMLSpanElement>(null);
-  const count = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLImageElement>(null);
 
   useMountEffect(() => {
@@ -49,7 +48,6 @@ export function Preloader({ slides }: { slides: Slide[] }) {
     let windowLoaded = document.readyState === "complete";
     let animation = 0;
     let shown = -1;
-    let travel = 0;
     let settleTimer = 0;
     let goneTimer = 0;
 
@@ -68,16 +66,6 @@ export function Preloader({ slides }: { slides: Slide[] }) {
       image.src = url;
       return image;
     });
-
-    const margin = window.innerWidth <= 700 ? 10 : 20;
-    const measure = () => {
-      travel = Math.max(
-        0,
-        window.innerHeight - margin * 2 - (count.current?.offsetHeight ?? 0),
-      );
-    };
-    measure();
-    window.addEventListener("resize", measure);
 
     const roll = (track: HTMLSpanElement | null, position: number) => {
       if (track) track.style.transform = `translateY(${-position * STEP}em)`;
@@ -103,10 +91,6 @@ export function Preloader({ slides }: { slides: Slide[] }) {
         hundreds.current,
         Math.floor(whole / 100) + (tenDigit === 9 && unitDigit === 9 ? fraction : 0),
       );
-
-      if (count.current) {
-        count.current.style.transform = `translateY(${-progress * travel}px)`;
-      }
 
       if (arrived.length > 0) {
         const next = Math.min(
@@ -139,7 +123,6 @@ export function Preloader({ slides }: { slides: Slide[] }) {
       window.clearTimeout(settleTimer);
       window.clearTimeout(goneTimer);
       window.removeEventListener("load", onLoad);
-      window.removeEventListener("resize", measure);
       preloaders.forEach((image) => {
         image.onload = null;
       });
@@ -163,7 +146,7 @@ export function Preloader({ slides }: { slides: Slide[] }) {
             <img ref={frame} alt="" />
           </div>
 
-          <div ref={count} className="preloader-count">
+          <div className="preloader-count">
             <Wheel trackRef={hundreds} />
             <Wheel trackRef={tens} />
             <Wheel trackRef={units} />
