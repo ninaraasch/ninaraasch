@@ -135,7 +135,7 @@ export function Navigation({
               aria-controls="overview-panel"
               data-active={openMenu === "overview"}
               onClick={() => onToggleMenu("overview")}
-              className="underline-reveal shrink-0"
+              className="underline-reveal bold shrink-0"
             >
               overview
             </button>
@@ -145,7 +145,7 @@ export function Navigation({
               aria-controls="contact-panel"
               data-active={openMenu === "contact"}
               onClick={() => onToggleMenu("contact")}
-              className="underline-reveal shrink-0"
+              className="underline-reveal bold shrink-0"
             >
               contact
             </button>
@@ -165,7 +165,7 @@ export function Navigation({
                 aria-controls="prints-panel"
                 data-active={openMenu === "prints"}
                 onClick={() => onToggleMenu("prints")}
-                className="underline-reveal"
+                className="underline-reveal bold"
               >
                 prints
               </button>
@@ -173,7 +173,7 @@ export function Navigation({
               <button
                 type="button"
                 aria-disabled="true"
-                className="underline-reveal"
+                className="underline-reveal bold"
               >
                 prints
               </button>

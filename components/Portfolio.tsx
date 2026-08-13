@@ -11,8 +11,8 @@ import { useMountEffect } from "@/hooks/useMountEffect";
 import { Cursor } from "./Cursor";
 import { EdgeZones } from "./EdgeZones";
 import { Navigation, type MenuName } from "./Navigation";
-import { Preloader } from "./Preloader";
 import { ProjectView } from "./ProjectView";
+import { SlideDots } from "./SlideDots";
 import { Slideshow } from "./Slideshow";
 
 type PortfolioProps = {
@@ -34,16 +34,19 @@ export function Portfolio({
   const [openMenu, setOpenMenu] = useState<MenuName | null>(null);
   const [hasOpenedOverview, setHasOpenedOverview] = useState(false);
   const [openProjectSlug, setOpenProjectSlug] = useState<string | null>(null);
+  const [direction, setDirection] = useState(1);
   const openProjectRef = useRef<string | null>(null);
 
   const project = sections.find(
     (section) => section.slug === openProjectSlug,
   );
 
-  const step = (offset: number) =>
+  const step = (offset: number) => {
+    setDirection(offset > 0 ? 1 : -1);
     setCurrentIndex(
       (index) => (index + offset + homeSlides.length) % homeSlides.length,
     );
+  };
 
   const toggleMenu = (menu: MenuName) => {
     setOpenMenu((current) => (current === menu ? null : menu));
@@ -116,9 +119,13 @@ export function Portfolio({
         />
       ) : null}
 
-      <Cursor />
+      <SlideDots
+        index={currentIndex}
+        total={homeSlides.length}
+        direction={direction}
+      />
 
-      <Preloader slides={homeSlides} />
+      <Cursor />
     </main>
   );
 }
