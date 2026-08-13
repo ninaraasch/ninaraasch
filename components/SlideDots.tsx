@@ -2,6 +2,9 @@
 
 import type { CSSProperties } from "react";
 
+const SLOTS = [0, 1, 2, 3, 4];
+const CURRENT = 2;
+
 type SlideDotsProps = {
   index: number;
   total: number;
@@ -13,14 +16,19 @@ export function SlideDots({ index, total, direction }: SlideDotsProps) {
 
   return (
     <div className="slide-dots" aria-hidden="true">
-      <div
-        key={index}
-        className="slide-dots-track"
-        style={{ "--dir": direction } as CSSProperties}
-      >
-        <span className="slide-dot" />
-        <span className="slide-dot slide-dot-current" />
-        <span className="slide-dot" />
+      <div className="slide-dots-window">
+        <div
+          key={index}
+          className="slide-dots-track"
+          style={{ "--dir": direction } as CSSProperties}
+        >
+          {SLOTS.map((slot) => (
+            <span
+              key={slot}
+              className={`slide-dot ${slot === CURRENT ? "slide-dot-current" : ""}`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
