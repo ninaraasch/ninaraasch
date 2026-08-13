@@ -68,7 +68,9 @@ body {
 .slide-dots {
     --dot: 5px;
     --dot-gap: 8px;
+    --dot-pad: 4px;
     --dot-slot: calc(var(--dot) + var(--dot-gap));
+    --dot-rest: calc(var(--dot-slot) * -1 + var(--dot-pad));
     position: fixed;
     left: 0;
     right: 0;
@@ -80,14 +82,14 @@ body {
 }
 
 .slide-dots-window {
-    width: calc(var(--dot) * 3 + var(--dot-gap) * 2);
+    width: calc(var(--dot) * 3 + var(--dot-gap) * 2 + var(--dot-pad) * 2);
     overflow: hidden;
 }
 
 .slide-dots-track {
     display: flex;
     gap: var(--dot-gap);
-    transform: translateX(calc(var(--dot-slot) * -1));
+    transform: translateX(var(--dot-rest));
     animation: dots-advance 0.26s var(--ease-out-strong);
     will-change: transform;
 }
@@ -95,11 +97,11 @@ body {
 @keyframes dots-advance {
     from {
         transform: translateX(
-            calc(var(--dot-slot) * -1 + var(--dot-slot) * var(--dir, 1))
+            calc(var(--dot-rest) + var(--dot-slot) * var(--dir, 1))
         );
     }
     to {
-        transform: translateX(calc(var(--dot-slot) * -1));
+        transform: translateX(var(--dot-rest));
     }
 }
 
@@ -107,7 +109,8 @@ body {
     flex: none;
     width: var(--dot);
     height: var(--dot);
-    border-radius: 50%;
+    aspect-ratio: 1;
+    border-radius: 999px;
     background-color: var(--color-ink);
     opacity: 0.3;
 }
