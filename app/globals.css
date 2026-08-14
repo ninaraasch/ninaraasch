@@ -74,7 +74,7 @@ body {
     z-index: 5;
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 7px;
     pointer-events: none;
 }
 
