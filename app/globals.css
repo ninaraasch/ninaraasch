@@ -67,10 +67,6 @@ body {
 
 .slide-dots {
     --dot: 5px;
-    --dot-gap: 8px;
-    --dot-pad: 4px;
-    --dot-slot: calc(var(--dot) + var(--dot-gap));
-    --dot-rest: calc(var(--dot-slot) * -1 + var(--dot-pad));
     position: fixed;
     left: 0;
     right: 0;
@@ -78,35 +74,11 @@ body {
     z-index: 5;
     display: flex;
     justify-content: center;
+    gap: 10px;
     pointer-events: none;
 }
 
-.slide-dots-window {
-    width: calc(var(--dot) * 3 + var(--dot-gap) * 2 + var(--dot-pad) * 2);
-    overflow: hidden;
-}
-
-.slide-dots-track {
-    display: flex;
-    gap: var(--dot-gap);
-    transform: translateX(var(--dot-rest));
-    animation: dots-advance 0.26s var(--ease-out-strong);
-    will-change: transform;
-}
-
-@keyframes dots-advance {
-    from {
-        transform: translateX(
-            calc(var(--dot-rest) + var(--dot-slot) * var(--dir, 1))
-        );
-    }
-    to {
-        transform: translateX(var(--dot-rest));
-    }
-}
-
 .slide-dot {
-    flex: none;
     width: var(--dot);
     height: var(--dot);
     aspect-ratio: 1;
@@ -115,20 +87,16 @@ body {
     opacity: 0.3;
 }
 
-.slide-dot-current {
-    opacity: 1;
-    transform: scale(1.5);
-    animation: dot-arrive 0.26s var(--ease-out-strong);
+.slide-dot-flash {
+    animation: dot-flash 0.45s var(--ease-out-strong);
 }
 
-@keyframes dot-arrive {
+@keyframes dot-flash {
     from {
-        opacity: 0.3;
-        transform: scale(1);
+        opacity: 1;
     }
     to {
-        opacity: 1;
-        transform: scale(1.5);
+        opacity: 0.3;
     }
 }
 
@@ -139,9 +107,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .slide-dots-track,
-    .slide-dot-current {
-        animation: none;
+    .slide-dot-flash {
+        animation-duration: 0.2s;
     }
 }
 

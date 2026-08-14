@@ -35,6 +35,7 @@ export function Portfolio({
   const [hasOpenedOverview, setHasOpenedOverview] = useState(false);
   const [openProjectSlug, setOpenProjectSlug] = useState<string | null>(null);
   const [direction, setDirection] = useState(1);
+  const [pulse, setPulse] = useState(0);
   const openProjectRef = useRef<string | null>(null);
 
   const project = sections.find(
@@ -43,6 +44,7 @@ export function Portfolio({
 
   const step = (offset: number) => {
     setDirection(offset > 0 ? 1 : -1);
+    setPulse((count) => count + 1);
     setCurrentIndex(
       (index) => (index + offset + homeSlides.length) % homeSlides.length,
     );
@@ -119,11 +121,7 @@ export function Portfolio({
         />
       ) : null}
 
-      <SlideDots
-        index={currentIndex}
-        total={homeSlides.length}
-        direction={direction}
-      />
+      <SlideDots pulse={pulse} direction={direction} />
 
       <Cursor />
     </main>

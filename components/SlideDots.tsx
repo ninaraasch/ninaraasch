@@ -1,35 +1,24 @@
 "use client";
 
-import type { CSSProperties } from "react";
-
-const SLOTS = [0, 1, 2, 3, 4];
-const CURRENT = 2;
-
 type SlideDotsProps = {
-  index: number;
-  total: number;
+  pulse: number;
   direction: number;
 };
 
-export function SlideDots({ index, total, direction }: SlideDotsProps) {
-  if (total < 2) return null;
+export function SlideDots({ pulse, direction }: SlideDotsProps) {
+  const back = pulse > 0 && direction < 0;
+  const forward = pulse > 0 && direction > 0;
 
   return (
     <div className="slide-dots" aria-hidden="true">
-      <div className="slide-dots-window">
-        <div
-          key={index}
-          className="slide-dots-track"
-          style={{ "--dir": direction } as CSSProperties}
-        >
-          {SLOTS.map((slot) => (
-            <span
-              key={slot}
-              className={`slide-dot ${slot === CURRENT ? "slide-dot-current" : ""}`}
-            />
-          ))}
-        </div>
-      </div>
+      <span
+        key={back ? `back-${pulse}` : "back"}
+        className={`slide-dot ${back ? "slide-dot-flash" : ""}`}
+      />
+      <span
+        key={forward ? `forward-${pulse}` : "forward"}
+        className={`slide-dot ${forward ? "slide-dot-flash" : ""}`}
+      />
     </div>
   );
 }
