@@ -178,6 +178,12 @@ export function Navigation({
             >
               overview
             </button>
+            <PrintsButton
+              prints={prints}
+              openMenu={openMenu}
+              onToggleMenu={onToggleMenu}
+              className="shrink-0"
+            />
             <button
               type="button"
               aria-expanded={openMenu === "contact"}
@@ -188,12 +194,6 @@ export function Navigation({
             >
               contact
             </button>
-            <PrintsButton
-              prints={prints}
-              openMenu={openMenu}
-              onToggleMenu={onToggleMenu}
-              className="shrink-0"
-            />
 
             <div
               className="slide-meta flex min-w-0 items-baseline gap-2.5 nav:gap-5"
