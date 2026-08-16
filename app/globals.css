@@ -29,8 +29,15 @@
 }
 
 @media (max-width: 700px) {
+    .slide-meta[data-hidden="true"],
+    .slide-dots[data-hidden="true"] {
+        opacity: 0;
+        pointer-events: none;
+    }
+
     .slide-meta {
         position: fixed;
+        transition: opacity 0.2s ease-out;
         left: var(--page-margin);
         right: var(--page-margin);
         bottom: calc(var(--image-bottom, var(--page-inset)) - 1.45em - 10px);
@@ -78,6 +85,7 @@ body {
 
 .slide-dots {
     --dot: 5px;
+    transition: opacity 0.2s ease-out;
     position: fixed;
     left: 0;
     right: 0;

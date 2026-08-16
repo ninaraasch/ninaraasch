@@ -195,7 +195,10 @@ export function Navigation({
               className="shrink-0"
             />
 
-            <div className="slide-meta flex min-w-0 items-baseline gap-2.5 nav:gap-5">
+            <div
+              className="slide-meta flex min-w-0 items-baseline gap-2.5 nav:gap-5"
+              data-hidden={isOpen}
+            >
               <button
                 ref={counterRef}
                 type="button"

@@ -161,7 +161,11 @@ export function Portfolio({
         />
       ) : null}
 
-      <SlideDots pulse={pulse} direction={direction} />
+      <SlideDots
+        pulse={pulse}
+        direction={direction}
+        hidden={openMenu !== null}
+      />
 
       <Cursor />
     </main>
