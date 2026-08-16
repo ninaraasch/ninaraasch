@@ -50,6 +50,18 @@ export function Portfolio({
     );
   };
 
+  const nextProject = () => {
+    const current = homeSlides[currentIndex].title;
+    let offset = 1;
+    while (
+      offset < homeSlides.length &&
+      homeSlides[(currentIndex + offset) % homeSlides.length].title === current
+    ) {
+      offset += 1;
+    }
+    step(offset);
+  };
+
   const toggleMenu = (menu: MenuName) => {
     setOpenMenu((current) => (current === menu ? null : menu));
     if (menu === "overview") setHasOpenedOverview(true);
@@ -105,6 +117,7 @@ export function Portfolio({
         onToggleMenu={toggleMenu}
         onCloseMenu={() => setOpenMenu(null)}
         onOpenProject={openProject}
+        onNextProject={nextProject}
         onHome={goHome}
       />
 

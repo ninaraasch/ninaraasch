@@ -13,6 +13,43 @@ import { Contact } from "./Contact";
 import { Overview } from "./Overview";
 import { Prints } from "./Prints";
 
+function PrintsButton({
+  prints,
+  openMenu,
+  onToggleMenu,
+  className = "",
+}: {
+  prints: Print[];
+  openMenu: MenuName | null;
+  onToggleMenu: (menu: MenuName) => void;
+  className?: string;
+}) {
+  if (prints.length === 0) {
+    return (
+      <button
+        type="button"
+        aria-disabled="true"
+        className={`underline-reveal bold ${className}`}
+      >
+        prints
+      </button>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      aria-expanded={openMenu === "prints"}
+      aria-controls="prints-panel"
+      data-active={openMenu === "prints"}
+      onClick={() => onToggleMenu("prints")}
+      className={`underline-reveal bold ${className}`}
+    >
+      prints
+    </button>
+  );
+}
+
 export type MenuName = "overview" | "contact" | "prints";
 
 type NavigationProps = {
@@ -26,6 +63,7 @@ type NavigationProps = {
   onToggleMenu: (menu: MenuName) => void;
   onCloseMenu: () => void;
   onOpenProject: (slug: string) => void;
+  onNextProject: () => void;
   onHome: () => void;
 };
 
@@ -40,11 +78,12 @@ export function Navigation({
   onToggleMenu,
   onCloseMenu,
   onOpenProject,
+  onNextProject,
   onHome,
 }: NavigationProps) {
   const isOpen = openMenu !== null;
-  const titleRef = useRef<HTMLParagraphElement>(null);
-  const counterRef = useRef<HTMLParagraphElement>(null);
+  const titleRef = useRef<HTMLButtonElement>(null);
+  const counterRef = useRef<HTMLButtonElement>(null);
 
   useMountEffect(() => {
     const title = titleRef.current;
@@ -128,7 +167,7 @@ export function Navigation({
             Nina Raasch
           </Link>
 
-          <div className="col-span-2 row-start-2 flex min-w-0 items-baseline gap-2.5 nav:col-span-5 nav:col-start-3 nav:row-start-1 nav:gap-5">
+          <div className="nav-links col-start-2 row-start-1 flex items-baseline justify-end gap-2.5 justify-self-end nav:col-span-3 nav:col-start-3 nav:justify-start nav:justify-self-start nav:gap-5">
             <button
               type="button"
               aria-expanded={openMenu === "overview"}
@@ -149,35 +188,33 @@ export function Navigation({
             >
               contact
             </button>
-            <p ref={counterRef} className="shrink-0">
-              {currentIndex + 1}/{slides.length}
-            </p>
-            <p ref={titleRef} className="truncate">
-              {slides[currentIndex].title}
-            </p>
+            <PrintsButton
+              prints={prints}
+              openMenu={openMenu}
+              onToggleMenu={onToggleMenu}
+              className="shrink-0"
+            />
           </div>
 
-          <div className="col-start-2 row-start-1 flex justify-end gap-2.5 justify-self-end nav:col-span-5 nav:col-start-8 nav:gap-5 nav:justify-self-stretch">
-            {prints.length > 0 ? (
-              <button
-                type="button"
-                aria-expanded={openMenu === "prints"}
-                aria-controls="prints-panel"
-                data-active={openMenu === "prints"}
-                onClick={() => onToggleMenu("prints")}
-                className="underline-reveal bold"
-              >
-                prints
-              </button>
-            ) : (
-              <button
-                type="button"
-                aria-disabled="true"
-                className="underline-reveal bold"
-              >
-                prints
-              </button>
-            )}
+          <div className="slide-meta col-span-2 row-start-2 flex min-w-0 items-baseline gap-2.5 nav:col-span-7 nav:col-start-6 nav:row-start-1 nav:gap-5">
+            <button
+              ref={counterRef}
+              type="button"
+              onClick={onNextProject}
+              aria-label="Next project"
+              className="underline-reveal shrink-0"
+            >
+              {currentIndex + 1}/{slides.length}
+            </button>
+            <button
+              ref={titleRef}
+              type="button"
+              onClick={onNextProject}
+              aria-label="Next project"
+              className="underline-reveal truncate"
+            >
+              {slides[currentIndex].title}
+            </button>
           </div>
         </div>
       </div>

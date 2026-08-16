@@ -23,8 +23,19 @@
 
 @media (max-width: 700px) {
     :root {
-        --nav-height: 82px;
+        --nav-height: 47px;
         --page-margin: 10px;
+    }
+}
+
+@media (max-width: 700px) {
+    .slide-meta {
+        position: fixed;
+        left: var(--page-margin);
+        right: var(--page-margin);
+        bottom: calc(var(--page-inset) - 1.45em - 10px);
+        flex-direction: row-reverse;
+        justify-content: space-between;
     }
 }
 
@@ -70,7 +81,7 @@ body {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: calc((var(--page-inset) - var(--dot)) / 2);
+    bottom: 16px;
     z-index: 5;
     display: flex;
     justify-content: center;
@@ -237,7 +248,6 @@ img {
 
 .underline-reveal {
     position: relative;
-    cursor: pointer;
 }
 
 .underline-reveal::after {
