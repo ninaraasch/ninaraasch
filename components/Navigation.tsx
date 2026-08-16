@@ -167,7 +167,7 @@ export function Navigation({
             Nina Raasch
           </Link>
 
-          <div className="nav-links col-start-2 row-start-1 flex items-baseline justify-end gap-2.5 justify-self-end nav:col-span-3 nav:col-start-3 nav:justify-start nav:justify-self-start nav:gap-5">
+          <div className="col-start-2 row-start-1 flex min-w-0 items-baseline justify-end gap-2.5 justify-self-end nav:col-span-10 nav:col-start-3 nav:justify-start nav:justify-self-start nav:gap-5">
             <button
               type="button"
               aria-expanded={openMenu === "overview"}
@@ -194,27 +194,27 @@ export function Navigation({
               onToggleMenu={onToggleMenu}
               className="shrink-0"
             />
-          </div>
 
-          <div className="slide-meta col-span-2 row-start-2 flex min-w-0 items-baseline gap-2.5 nav:col-span-7 nav:col-start-6 nav:row-start-1 nav:gap-5">
-            <button
-              ref={counterRef}
-              type="button"
-              onClick={onNextProject}
-              aria-label="Next project"
-              className="underline-reveal shrink-0"
-            >
-              {currentIndex + 1}/{slides.length}
-            </button>
-            <button
-              ref={titleRef}
-              type="button"
-              onClick={onNextProject}
-              aria-label="Next project"
-              className="underline-reveal truncate"
-            >
-              {slides[currentIndex].title}
-            </button>
+            <div className="slide-meta flex min-w-0 items-baseline gap-2.5 nav:gap-5">
+              <button
+                ref={counterRef}
+                type="button"
+                onClick={onNextProject}
+                aria-label="Next project"
+                className="underline-reveal shrink-0"
+              >
+                {currentIndex + 1}/{slides.length}
+              </button>
+              <button
+                ref={titleRef}
+                type="button"
+                onClick={onNextProject}
+                aria-label="Next project"
+                className="underline-reveal truncate"
+              >
+                {slides[currentIndex].title}
+              </button>
+            </div>
           </div>
         </div>
       </div>
