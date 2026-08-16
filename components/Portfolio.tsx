@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import type {
   ContactContent,
   Print,
@@ -8,12 +8,15 @@ import type {
   Slide,
 } from "@/lib/content";
 import { useMountEffect } from "@/hooks/useMountEffect";
+import { useViewportHeight, useViewportWidth } from "@/hooks/useViewport";
 import { Cursor } from "./Cursor";
 import { EdgeZones } from "./EdgeZones";
 import { Navigation, type MenuName } from "./Navigation";
 import { ProjectView } from "./ProjectView";
 import { SlideDots } from "./SlideDots";
 import { Slideshow } from "./Slideshow";
+
+const PAGE_INSET = 87;
 
 type PortfolioProps = {
   sections: ProjectSection[];
@@ -37,6 +40,24 @@ export function Portfolio({
   const [direction, setDirection] = useState(1);
   const [pulse, setPulse] = useState(0);
   const openProjectRef = useRef<string | null>(null);
+  const openMenuRef = useRef<MenuName | null>(null);
+
+  const setMenu = (menu: MenuName | null) => {
+    openMenuRef.current = menu;
+    setOpenMenu(menu);
+  };
+
+  const viewportWidth = useViewportWidth();
+  const viewportHeight = useViewportHeight();
+  const margin = viewportWidth <= 700 ? 10 : 20;
+  const frameWidth = viewportWidth - margin * 2;
+  const frameHeight = viewportHeight - PAGE_INSET * 2;
+  const slide = homeSlides[currentIndex];
+  const renderedHeight =
+    frameWidth / frameHeight > slide.width / slide.height
+      ? frameHeight
+      : frameWidth / (slide.width / slide.height);
+  const imageBottom = PAGE_INSET + Math.max(0, frameHeight - renderedHeight) / 2;
 
   const project = sections.find(
     (section) => section.slug === openProjectSlug,
@@ -63,14 +84,14 @@ export function Portfolio({
   };
 
   const toggleMenu = (menu: MenuName) => {
-    setOpenMenu((current) => (current === menu ? null : menu));
+    setMenu(openMenuRef.current === menu ? null : menu);
     if (menu === "overview") setHasOpenedOverview(true);
   };
 
   const openProject = (slug: string) => {
     openProjectRef.current = slug;
     setOpenProjectSlug(slug);
-    setOpenMenu(null);
+    setMenu(null);
   };
 
   const closeProject = () => {
@@ -80,20 +101,23 @@ export function Portfolio({
 
   const goHome = () => {
     closeProject();
-    setOpenMenu(null);
+    setMenu(null);
   };
 
   const returnToIndex = () => {
     closeProject();
-    setOpenMenu("overview");
+    setMenu("overview");
   };
 
   useMountEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (openProjectRef.current) return;
+      if (event.key === "Escape") {
+        setMenu(null);
+        return;
+      }
+      if (openProjectRef.current || openMenuRef.current) return;
       if (event.key === "ArrowRight") step(1);
       if (event.key === "ArrowLeft") step(-1);
-      if (event.key === "Escape") setOpenMenu(null);
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -101,7 +125,10 @@ export function Portfolio({
   });
 
   return (
-    <main className="relative h-dvh overflow-hidden">
+    <main
+      className="relative h-dvh overflow-hidden"
+      style={{ "--image-bottom": `${Math.round(imageBottom)}px` } as CSSProperties}
+    >
       <Slideshow slides={homeSlides} currentIndex={currentIndex} />
 
       <EdgeZones onPrevious={() => step(-1)} onNext={() => step(1)} />
@@ -115,7 +142,7 @@ export function Portfolio({
         openMenu={openMenu}
         hasOpenedOverview={hasOpenedOverview}
         onToggleMenu={toggleMenu}
-        onCloseMenu={() => setOpenMenu(null)}
+        onCloseMenu={() => setMenu(null)}
         onOpenProject={openProject}
         onNextProject={nextProject}
         onHome={goHome}

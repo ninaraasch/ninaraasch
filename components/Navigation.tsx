@@ -200,8 +200,9 @@ export function Navigation({
                 ref={counterRef}
                 type="button"
                 onClick={onNextProject}
+                disabled={isOpen}
                 aria-label="Next project"
-                className="underline-reveal shrink-0"
+                className="shrink-0"
               >
                 {currentIndex + 1}/{slides.length}
               </button>
@@ -209,8 +210,9 @@ export function Navigation({
                 ref={titleRef}
                 type="button"
                 onClick={onNextProject}
+                disabled={isOpen}
                 aria-label="Next project"
-                className="underline-reveal truncate"
+                className="truncate"
               >
                 {slides[currentIndex].title}
               </button>

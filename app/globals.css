@@ -33,7 +33,7 @@
         position: fixed;
         left: var(--page-margin);
         right: var(--page-margin);
-        bottom: calc(var(--page-inset) - 1.45em - 10px);
+        bottom: calc(var(--image-bottom, var(--page-inset)) - 1.45em - 10px);
         flex-direction: row-reverse;
         justify-content: space-between;
     }
@@ -81,7 +81,7 @@ body {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 16px;
+    bottom: calc(var(--image-bottom, var(--page-inset)) - 1.45em - 25px);
     z-index: 5;
     display: flex;
     justify-content: center;
